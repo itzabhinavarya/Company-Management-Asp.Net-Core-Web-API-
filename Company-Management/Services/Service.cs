@@ -84,7 +84,6 @@ namespace Company_Management.Services
             {
                 if (memberModel.OTP == validOtp.Otp1)
                 {
-
                     if (member == null)
                     {
                         var MemberData = new MemberTable()
