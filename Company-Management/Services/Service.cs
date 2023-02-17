@@ -11,14 +11,15 @@ namespace Company_Management.Services
     public class Service : IService
     {
         private readonly CompanyManagementContext _company;
+
         public Service(CompanyManagementContext companyManagementContext)
         {
             _company = companyManagementContext;
         }
+
         //----------------------------GENERATE ID FOR USER----------------------------------- 
         public async Task<string> GenerateId(MemberModel memberModel)
         {
-            //var existid = _company.MemberTables.Where(x => x.Email == memberModel.Email || x.PhoneNo == memberModel.PhoneNo).Select(x => x.Id).FirstOrDefault();
             var existid =await _company.MemberTables.OrderBy(x => x.CreatedOn).Select(x => x.Id).LastOrDefaultAsync();
             var value = "UNI";
             var digit = 100;
@@ -36,17 +37,20 @@ namespace Company_Management.Services
             }
         }
         //----------------------------END OF ID GENERATE METHOD----------------------------------- 
+
+
         //----------------------------OTP GENERATE METHOD----------------------------------- 
         public async Task<GenericResult<string>> GetOTP(OTPModel OtpModel)
         {
             GenericResult<string> genericResult = new GenericResult<string>();
-            var existUser = await  _company.MemberTables.Where(x => x.Email == OtpModel.Email || x.PhoneNo == OtpModel.PhoneNo).Select(x=>x.Id).FirstOrDefaultAsync();
+            var existUser =await  _company.MemberTables.Where(x => x.Email == OtpModel.Email || x.PhoneNo == OtpModel.PhoneNo).Select(x=>x.Id).FirstOrDefaultAsync();
             if(existUser == null)
             {
                 Random random = new Random();
                 int min = 1000;
                 int max = 9999;
                 int otp = random.Next(min, max);
+
                 var OTPData = new Otp()
                 {
                     Otp1 = otp.ToString(),
@@ -69,17 +73,18 @@ namespace Company_Management.Services
             }
         }
         //----------------------------OTP GENERATE METHOD ENDS----------------------------------- 
-        //
+
         //----------------------------USER REGISTRATION SERVICES----------------------------------- 
         public async Task<GenericResult<MemberModel>> AddMember(MemberModel memberModel)
         {
             GenericResult<MemberModel> genericResult = new GenericResult<MemberModel>();
-            var validOtp = await _company.Otps.Where(x=>x.PhoneNo == memberModel.PhoneNo && x.Email == memberModel.Email && x.IsVerified == 0).FirstOrDefaultAsync();
+            var validOtp =await _company.Otps.Where(x=>x.PhoneNo == memberModel.PhoneNo && x.Email == memberModel.Email && x.IsVerified == 0).OrderBy(x=>x.Otpid).LastOrDefaultAsync();
             var member =await _company.MemberTables.Where(x => x.PhoneNo == memberModel.PhoneNo || x.Email == memberModel.Email).FirstOrDefaultAsync();
             if (validOtp != null)
             {
                 if (memberModel.OTP == validOtp.Otp1)
                 {
+
                     if (member == null)
                     {
                         var MemberData = new MemberTable()
@@ -95,7 +100,6 @@ namespace Company_Management.Services
                         var UserData = new UserTable()
                         {
                             UserId = MemberData.Id,
-                            Id = MemberData.Id,
                             PhoneNo = MemberData.PhoneNo,
                             Email = MemberData.Email,
                             Password = memberModel.Password,
@@ -106,7 +110,6 @@ namespace Company_Management.Services
                             UpdatedOn = DateTime.Now,
                             Dstatus = "V"
                         };
-                        //
                         validOtp.IsVerified = 1;
                         MemberData.CreatedBy = MemberData.Id;
                         MemberData.UpdatedBy = MemberData.Id;
@@ -114,7 +117,7 @@ namespace Company_Management.Services
                         UserData.UpdatedBy = MemberData.Id;
                         genericResult.Status = "Success";
                         genericResult.Message = "User Added Successfully";
-                        //enericResult.Data = MemberData;
+                        //genericResult.Data = MemberData;
                         _company.Otps.Update(validOtp);
                         await _company.MemberTables.AddAsync(MemberData);
                         _company.UserTables.Add(UserData);
