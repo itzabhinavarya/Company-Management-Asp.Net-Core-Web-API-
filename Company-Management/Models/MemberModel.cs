@@ -12,8 +12,5 @@ namespace Company_Management.Models
         public string PhoneNo { get; set; }
         public string OTP { get; set; }
         public string Password { get; set; }
-        public DateTime? LastLogin { get; set; }
-        public string Role { get; set; }
-        public string Status { get; set; }
     }
 }

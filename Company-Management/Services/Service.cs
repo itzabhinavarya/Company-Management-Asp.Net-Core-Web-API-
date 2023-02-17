@@ -19,7 +19,7 @@ namespace Company_Management.Services
         public async Task<string> GenerateId(MemberModel memberModel)
         {
             //var existid = _company.MemberTables.Where(x => x.Email == memberModel.Email || x.PhoneNo == memberModel.PhoneNo).Select(x => x.Id).FirstOrDefault();
-            var existid = _company.MemberTables.OrderBy(x => x.CreatedOn).Select(x => x.Id).LastOrDefault();
+            var existid =await _company.MemberTables.OrderBy(x => x.CreatedOn).Select(x => x.Id).LastOrDefaultAsync();
             var value = "UNI";
             var digit = 100;
             if (existid == null)
@@ -40,7 +40,7 @@ namespace Company_Management.Services
         public async Task<GenericResult<string>> GetOTP(OTPModel OtpModel)
         {
             GenericResult<string> genericResult = new GenericResult<string>();
-            var existUser =  _company.MemberTables.Where(x => x.Email == OtpModel.Email || x.PhoneNo == OtpModel.PhoneNo).Select(x=>x.Id).FirstOrDefault();
+            var existUser = await  _company.MemberTables.Where(x => x.Email == OtpModel.Email || x.PhoneNo == OtpModel.PhoneNo).Select(x=>x.Id).FirstOrDefaultAsync();
             if(existUser == null)
             {
                 Random random = new Random();
@@ -100,12 +100,13 @@ namespace Company_Management.Services
                             Email = MemberData.Email,
                             Password = memberModel.Password,
                             LastLogin = DateTime.Now,
-                            Role = memberModel.Role,
-                            Status = memberModel.Status,
+                            Role = "Owner",
+                            Status = "Admin",
                             CreatedOn = DateTime.Now,
                             UpdatedOn = DateTime.Now,
                             Dstatus = "V"
                         };
+                        //
                         validOtp.IsVerified = 1;
                         MemberData.CreatedBy = MemberData.Id;
                         MemberData.UpdatedBy = MemberData.Id;
