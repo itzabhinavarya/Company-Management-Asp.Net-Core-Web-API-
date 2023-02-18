@@ -21,7 +21,6 @@ D:\Company-Management\Company-Management\bin\Debug\net5.0\Microsoft.IdentityMode
 D:\Company-Management\Company-Management\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 D:\Company-Management\Company-Management\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
 D:\Company-Management\Company-Management\bin\Debug\net5.0\Microsoft.OpenApi.dll
-D:\Company-Management\Company-Management\bin\Debug\net5.0\Newtonsoft.Json.dll
 D:\Company-Management\Company-Management\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\Company-Management\Company-Management\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Company-Management\Company-Management\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -41,7 +40,6 @@ D:\Company-Management\Company-Management\bin\Debug\net5.0\runtimes\win-x86\nativ
 D:\Company-Management\Company-Management\bin\Debug\net5.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.pdb
 D:\Company-Management\Company-Management\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 D:\Company-Management\Company-Management\bin\Debug\net5.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-D:\Company-Management\Company-Management\obj\Debug\net5.0\Company-Management.csproj.AssemblyReference.cache
 D:\Company-Management\Company-Management\obj\Debug\net5.0\Company-Management.GeneratedMSBuildEditorConfig.editorconfig
 D:\Company-Management\Company-Management\obj\Debug\net5.0\Company-Management.AssemblyInfoInputs.cache
 D:\Company-Management\Company-Management\obj\Debug\net5.0\Company-Management.AssemblyInfo.cs
@@ -56,3 +54,4 @@ D:\Company-Management\Company-Management\obj\Debug\net5.0\Company-Management.dll
 D:\Company-Management\Company-Management\obj\Debug\net5.0\ref\Company-Management.dll
 D:\Company-Management\Company-Management\obj\Debug\net5.0\Company-Management.pdb
 D:\Company-Management\Company-Management\obj\Debug\net5.0\Company-Management.genruntimeconfig.cache
+D:\Company-Management\Company-Management\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
