@@ -177,8 +177,8 @@ namespace Company_Management.Services
                 var token = GenerateToken(credentialModel);
                 var newData = new LoginDTO()
                 {
-                    Name = exist.Id,
-                    Email = exist.Email,
+                    UserID = exist.UserId,
+                    MemberID = exist.Id,
                     Token = token
                 };
                 genericResult.Status = "Success";
@@ -201,15 +201,15 @@ namespace Company_Management.Services
             var IssuerSigninKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var SigninCredentials = new SigningCredentials(IssuerSigninKey,SecurityAlgorithms.HmacSha256);
 
-            var Claims = new[]
-            {
-                new Claim("Member ID : ",cred.Cred),
-                new Claim("User ID : ", cred.Password)
-            };
+            //var Claims = new[]
+            //{
+            //    new Claim("Member ID : ",cred.Cred),
+            //    new Claim("User ID : ", cred.Password)
+            //};
             var token = new JwtSecurityToken(
                 _config["Jwt:Issuer"],
                 _config["Jwt:Audience"],
-                Claims,
+                //Claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: SigninCredentials
             );
