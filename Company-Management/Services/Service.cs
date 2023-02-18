@@ -179,6 +179,7 @@ namespace Company_Management.Services
                 {
                     UserID = exist.UserId,
                     MemberID = exist.Id,
+                    Status = exist.Status,
                     Token = token
                 };
                 genericResult.Status = "Success";

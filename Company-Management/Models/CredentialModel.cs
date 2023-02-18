@@ -9,6 +9,6 @@ namespace Company_Management.Models
     {
         public string Cred { get; set; }
         public string Password { get; set; }
-        public string Type { get; set; }
+        public string Type { get; set; 
     }
 }

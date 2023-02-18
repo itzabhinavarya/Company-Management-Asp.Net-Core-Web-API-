@@ -10,5 +10,6 @@ namespace Company_Management.DTO
         public string UserID { get; set; }
         public string MemberID { get; set; }
         public string Token { get; set; }
+        public string Status { get; set; }
     }
 }
