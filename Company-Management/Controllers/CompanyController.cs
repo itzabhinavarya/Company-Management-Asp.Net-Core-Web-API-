@@ -1,4 +1,6 @@
-﻿using Company_Management.Models;
+﻿using Company_Management.Data;
+using Company_Management.DTO;
+using Company_Management.Models;
 using Company_Management.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +34,13 @@ namespace Company_Management.Controllers
         {
             var otp = await _service.GetOTP(otpModel);
             return Ok(otp);
+        }
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> Token(CredentialModel cred)
+        {
+            GenericResult<LoginDTO> result = await _service.Login(cred);
+            return Ok(result);
         }
     }
 }

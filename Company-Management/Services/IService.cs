@@ -1,4 +1,6 @@
-﻿using Company_Management.Models;
+﻿using Company_Management.Data;
+using Company_Management.DTO;
+using Company_Management.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +12,7 @@ namespace Company_Management.Services
     {
         Task<GenericResult<MemberModel>> AddMember(MemberModel memberModel);
         Task<GenericResult<string>> GetOTP(OTPModel OtpModel);
+        string GenerateToken(CredentialModel cred);
+        Task<GenericResult<LoginDTO>> Login(CredentialModel credentialModel);
     }
 }

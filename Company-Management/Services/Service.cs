@@ -1,9 +1,15 @@
 ﻿using Company_Management.Data;
+using Company_Management.DTO;
 using Company_Management.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Company_Management.Services
@@ -12,9 +18,12 @@ namespace Company_Management.Services
     {
         private readonly CompanyManagementContext _company;
 
-        public Service(CompanyManagementContext companyManagementContext)
+        public IConfiguration _config { get; }
+
+        public Service(CompanyManagementContext companyManagementContext , IConfiguration configuration)
         {
             _company = companyManagementContext;
+            _config = configuration;
         }
 
         //----------------------------GENERATE ID FOR USER----------------------------------- 
@@ -133,5 +142,78 @@ namespace Company_Management.Services
             return genericResult;
         }
         //----------------------------END OF USER REGISTRATION SERVICES----------------------------------- 
+        //
+        //----------------------------Login Service----------------------------------------
+        //
+        public async Task<GenericResult<LoginDTO>> Login(CredentialModel credentialModel)
+        {
+            GenericResult<LoginDTO> genericResult = new GenericResult<LoginDTO>();
+
+            var phone = await _company.UserTables.Where(x=>x.PhoneNo == credentialModel.Cred && x.Password == credentialModel.Password).FirstOrDefaultAsync();
+            var email = await _company.UserTables.Where(x=>x.Email == credentialModel.Cred && x.Password == credentialModel.Password).FirstOrDefaultAsync();
+            //var existData = await _company.UserTables.Where(x => x.PhoneNo == credentialModel.Cred || x.Email == credentialModel.Cred).FirstOrDefaultAsync();
+            var type = credentialModel.Type.ToLower();
+            if(credentialModel.Type == "email")
+            {
+                if (email == null)
+                {
+                    genericResult.Status = "Failed";
+                    genericResult.Message = "Invalid Email";
+                    return genericResult;
+                }
+            }
+            if (credentialModel.Type == "phone")
+            {
+                if (phone == null)
+                {
+                    genericResult.Status = "Failed";
+                    genericResult.Message = "Invalid Phone";
+                    return genericResult;
+                }
+            }
+            var exist = await _company.UserTables.Where(x => x.Email == credentialModel.Cred && x.Password == credentialModel.Password || x.PhoneNo == credentialModel.Cred && x.Password == credentialModel.Password).FirstOrDefaultAsync();
+            if (exist != null)
+            {
+                var token = GenerateToken(credentialModel);
+                var newData = new LoginDTO()
+                {
+                    Name = exist.Id,
+                    Email = exist.Email,
+                    Token = token
+                };
+                genericResult.Status = "Success";
+                genericResult.Message = "Token Generated Successfully";
+                genericResult.Data = newData;
+                return genericResult;
+            }
+            else
+            {
+                genericResult.Status = "Failed";
+                genericResult.Message = "Invalid Password";
+                return genericResult;
+            }
+        }
+        //
+        //----------------------------Authentication And Authorization -----------------------------------
+        //
+        public string GenerateToken(CredentialModel cred)
+        {
+            var IssuerSigninKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var SigninCredentials = new SigningCredentials(IssuerSigninKey,SecurityAlgorithms.HmacSha256);
+
+            var Claims = new[]
+            {
+                new Claim("Member ID : ",cred.Cred),
+                new Claim("User ID : ", cred.Password)
+            };
+            var token = new JwtSecurityToken(
+                _config["Jwt:Issuer"],
+                _config["Jwt:Audience"],
+                Claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: SigninCredentials
+            );
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
     }
 }
