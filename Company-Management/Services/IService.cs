@@ -12,7 +12,6 @@ namespace Company_Management.Services
     {
         Task<GenericResult<MemberModel>> AddMember(MemberModel memberModel);
         Task<GenericResult<string>> GetOTP(OTPModel OtpModel);
-        string GenerateToken(CredentialModel cred);
         Task<GenericResult<LoginDTO>> Login(CredentialModel credentialModel);
     }
 }

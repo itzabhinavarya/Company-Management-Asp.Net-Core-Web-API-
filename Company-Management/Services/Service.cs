@@ -45,14 +45,13 @@ namespace Company_Management.Services
                 return Id;
             }
         }
-        //----------------------------END OF ID GENERATE METHOD----------------------------------- 
-
-
+        //----------------------------END OF ID GENERATE METHOD-----------------------------
+        //
         //----------------------------OTP GENERATE METHOD----------------------------------- 
         public async Task<GenericResult<string>> GetOTP(OTPModel OtpModel)
         {
             GenericResult<string> genericResult = new GenericResult<string>();
-            var existUser =await  _company.MemberTables.Where(x => x.Email == OtpModel.Email || x.PhoneNo == OtpModel.PhoneNo).Select(x=>x.Id).FirstOrDefaultAsync();
+            var existUser =await  _company.MemberTables.Where(x => x.Email == OtpModel.Email && x.PhoneNo == OtpModel.PhoneNo).Select(x=>x.Id).FirstOrDefaultAsync();
             if(existUser == null)
             {
                 Random random = new Random();
@@ -88,7 +87,7 @@ namespace Company_Management.Services
         {
             GenericResult<MemberModel> genericResult = new GenericResult<MemberModel>();
             var validOtp =await _company.Otps.Where(x=>x.PhoneNo == memberModel.PhoneNo && x.Email == memberModel.Email && x.IsVerified == 0).OrderBy(x=>x.Otpid).LastOrDefaultAsync();
-            var member =await _company.MemberTables.Where(x => x.PhoneNo == memberModel.PhoneNo || x.Email == memberModel.Email).FirstOrDefaultAsync();
+            var member =await _company.MemberTables.Where(x => x.PhoneNo == memberModel.PhoneNo && x.Email == memberModel.Email).FirstOrDefaultAsync();
             if (validOtp != null)
             {
                 if (memberModel.OTP == validOtp.Otp1)
@@ -108,6 +107,7 @@ namespace Company_Management.Services
                         var UserData = new UserTable()
                         {
                             UserId = MemberData.Id,
+                            Id = MemberData.Id,
                             PhoneNo = MemberData.PhoneNo,
                             Email = MemberData.Email,
                             Password = memberModel.Password,
@@ -153,7 +153,7 @@ namespace Company_Management.Services
             var email = await _company.UserTables.Where(x=>x.Email == credentialModel.Cred && x.Password == credentialModel.Password).FirstOrDefaultAsync();
             //var existData = await _company.UserTables.Where(x => x.PhoneNo == credentialModel.Cred || x.Email == credentialModel.Cred).FirstOrDefaultAsync();
             var type = credentialModel.Type.ToLower();
-            if(credentialModel.Type == "email")
+            if(type == "email")
             {
                 if (email == null)
                 {
@@ -162,7 +162,7 @@ namespace Company_Management.Services
                     return genericResult;
                 }
             }
-            if (credentialModel.Type == "phone")
+            if (type == "phone")
             {
                 if (phone == null)
                 {
@@ -174,7 +174,7 @@ namespace Company_Management.Services
             var exist = await _company.UserTables.Where(x => x.Email == credentialModel.Cred && x.Password == credentialModel.Password || x.PhoneNo == credentialModel.Cred && x.Password == credentialModel.Password).FirstOrDefaultAsync();
             if (exist != null)
             {
-                var token = GenerateToken(credentialModel);
+                var token = GenerateToken(exist);
                 var newData = new LoginDTO()
                 {
                     UserID = exist.UserId,
@@ -197,24 +197,32 @@ namespace Company_Management.Services
         //
         //----------------------------Authentication And Authorization -----------------------------------
         //
-        public string GenerateToken(CredentialModel cred)
+        public string GenerateToken(UserTable cred)
         {
             var IssuerSigninKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var SigninCredentials = new SigningCredentials(IssuerSigninKey,SecurityAlgorithms.HmacSha256);
-
-            //var Claims = new[]
-            //{
-            //    new Claim("Member ID : ",cred.Cred),
-            //    new Claim("User ID : ", cred.Password)
-            //};
+            
+            var Claims = new[]
+            {
+                new Claim("Member ID : ",cred.Id),
+                new Claim("User ID : ",cred.UserId)
+            };
             var token = new JwtSecurityToken(
                 _config["Jwt:Issuer"],
                 _config["Jwt:Audience"],
-                //Claims,
+                Claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: SigninCredentials
             );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+        //
+        //
+        //-----------------------------
+
+
+
+
+
     }
 }

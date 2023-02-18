@@ -1,6 +1,4 @@
-﻿using Company_Management.Data;
-using Company_Management.DTO;
-using Company_Management.Models;
+﻿using Company_Management.Models;
 using Company_Management.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,36 +9,21 @@ using System.Threading.Tasks;
 
 namespace Company_Management.Controllers
 {
-    [Route("api")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CompanyController : ControllerBase
     {
-        private readonly IService _service;
+        private readonly ICompanyServices _company;
 
-        public CompanyController(IService service)
+        public CompanyController(ICompanyServices companyService)
         {
-            _service = service;
+            _company = companyService;
         }
-
-        [HttpPost("AddMember")]
-        public async Task<IActionResult> AddUser(MemberModel memberModel)
+        [HttpPost("AddCompany")]
+        public async Task<IActionResult> AddCompany(CompanyModel companyModel)
         {
-            var data =await _service.AddMember(memberModel);
-            return Ok(data);
-        }
-
-        [HttpPost("OTP")]
-        public async Task<IActionResult> GetOtp([FromBody]OTPModel otpModel)
-        {
-            var otp = await _service.GetOTP(otpModel);
-            return Ok(otp);
-        }
-
-        [HttpPost("Login")]
-        public async Task<IActionResult> Token(CredentialModel cred)
-        {
-            GenericResult<LoginDTO> result = await _service.Login(cred);
-            return Ok(result);
+            GenericResult<string> s =await _company.SetupCompany(companyModel,Response);
+            return Ok(s);
         }
     }
 }
