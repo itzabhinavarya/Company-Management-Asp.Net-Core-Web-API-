@@ -10,6 +10,7 @@ namespace Company_Management.Data
         public MemberTable()
         {
             CompanyTables = new HashSet<CompanyTable>();
+            DepartmentTables = new HashSet<DepartmentTable>();
             Employees = new HashSet<Employee>();
             ReportingManagers = new HashSet<ReportingManager>();
             UserTables = new HashSet<UserTable>();
@@ -26,6 +27,7 @@ namespace Company_Management.Data
         public string Dstatus { get; set; }
 
         public virtual ICollection<CompanyTable> CompanyTables { get; set; }
+        public virtual ICollection<DepartmentTable> DepartmentTables { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
         public virtual ICollection<ReportingManager> ReportingManagers { get; set; }
         public virtual ICollection<UserTable> UserTables { get; set; }

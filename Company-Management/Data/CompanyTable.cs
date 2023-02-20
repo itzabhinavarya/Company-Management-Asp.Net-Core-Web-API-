@@ -7,11 +7,6 @@ namespace Company_Management.Data
 {
     public partial class CompanyTable
     {
-        public CompanyTable()
-        {
-            DepartmentTables = new HashSet<DepartmentTable>();
-        }
-
         public int CompanyId { get; set; }
         public string Id { get; set; }
         public string CompanyName { get; set; }
@@ -27,6 +22,5 @@ namespace Company_Management.Data
         public string Dstatus { get; set; }
 
         public virtual MemberTable IdNavigation { get; set; }
-        public virtual ICollection<DepartmentTable> DepartmentTables { get; set; }
     }
 }

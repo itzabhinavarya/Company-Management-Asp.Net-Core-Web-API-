@@ -30,7 +30,7 @@ namespace Company_Management.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=.;Database=CompanyManagement;Integrated Security=True;");
+                optionsBuilder.UseSqlServer("Server=.;Database=CompanyManagement;Integrated Security=true;");
             }
         }
 
@@ -103,11 +103,9 @@ namespace Company_Management.Data
             modelBuilder.Entity<DepartmentTable>(entity =>
             {
                 entity.HasKey(e => e.DepartmentId)
-                    .HasName("PK__Departme__B2079BEDF75F35C3");
+                    .HasName("PK__Departme__B2079BED33FB9CBF");
 
                 entity.ToTable("DepartmentTable");
-
-                entity.Property(e => e.DepartmentId).ValueGeneratedNever();
 
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(100)
@@ -124,12 +122,16 @@ namespace Company_Management.Data
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
+                entity.Property(e => e.Id)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
 
                 entity.HasOne(d => d.IdNavigation)
                     .WithMany(p => p.DepartmentTables)
                     .HasForeignKey(d => d.Id)
-                    .HasConstraintName("FK__DepartmentTa__Id__403A8C7D");
+                    .HasConstraintName("fk_Mem");
 
                 entity.HasOne(d => d.Manager)
                     .WithMany(p => p.DepartmentTables)
@@ -189,7 +191,7 @@ namespace Company_Management.Data
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.Employees)
                     .HasForeignKey(d => d.DepartmentId)
-                    .HasConstraintName("FK__Employee__Depart__44FF419A");
+                    .HasConstraintName("FK_DeptId");
 
                 entity.HasOne(d => d.IdNavigation)
                     .WithMany(p => p.Employees)
@@ -300,13 +302,11 @@ namespace Company_Management.Data
             modelBuilder.Entity<UserTable>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__UserTabl__1788CC4CAD4483B3");
+                    .HasName("PK__UserTabl__CB9A1CFFD1E7AF39");
 
                 entity.ToTable("UserTable");
 
-                entity.Property(e => e.UserId)
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.UserId).HasColumnName("userId");
 
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(20)
