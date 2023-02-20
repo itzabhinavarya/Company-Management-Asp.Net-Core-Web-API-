@@ -106,7 +106,7 @@ namespace Company_Management.Services
                         };
                         var UserData = new UserTable()
                         {
-                            UserId = MemberData.Id,
+                            //UserId = MemberData.Id,
                             Id = MemberData.Id,
                             PhoneNo = MemberData.PhoneNo,
                             Email = MemberData.Email,
@@ -177,7 +177,7 @@ namespace Company_Management.Services
                 var token = GenerateToken(exist);
                 var newData = new LoginDTO()
                 {
-                    UserID = exist.UserId,
+                    UserID = exist.UserId.ToString(),
                     MemberID = exist.Id,
                     Status = exist.Status,
                     Token = token
@@ -205,7 +205,7 @@ namespace Company_Management.Services
             var Claims = new[]
             {
                 new Claim("Member ID : ",cred.Id),
-                new Claim("User ID : ",cred.UserId)
+                new Claim("User ID : ",cred.UserId.ToString())
             };
             var token = new JwtSecurityToken(
                 _config["Jwt:Issuer"],

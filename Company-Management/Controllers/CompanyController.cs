@@ -1,4 +1,5 @@
-﻿using Company_Management.Models;
+﻿using Company_Management.Helper;
+using Company_Management.Models;
 using Company_Management.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,8 @@ namespace Company_Management.Controllers
         [HttpPost("AddCompany")]
         public async Task<IActionResult> AddCompany(CompanyModel companyModel)
         {
-            GenericResult<string> s =await _company.SetupCompany(companyModel,Response);
+            string claim = Help.GetClaims(Request);
+            GenericResult<string> s =await _company.SetupCompany(companyModel,claim);
             return Ok(s);
         }
     }

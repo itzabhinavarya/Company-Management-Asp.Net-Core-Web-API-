@@ -1,4 +1,6 @@
-﻿using Company_Management.Services;
+﻿using Company_Management.Helper;
+using Company_Management.Models;
+using Company_Management.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,6 +19,13 @@ namespace Company_Management.Controllers
         public DepartmentController(IDepartmentService departmentInterface)
         {
             _departmentInterface = departmentInterface;
+        }
+        [HttpPost("Department")]
+        public async Task<IActionResult> AddDepartment(DepartmentModel departmentModel)
+        {
+            string c = Help.GetClaims(Request);
+            GenericResult<string> data =await _departmentInterface.AddDepartmentAsync(departmentModel,c);
+            return Ok(data);
         }
     }
 }

@@ -7,5 +7,6 @@ namespace Company_Management.DTO
 {
     public class DepartmentDTO
     {
+
     }
 }

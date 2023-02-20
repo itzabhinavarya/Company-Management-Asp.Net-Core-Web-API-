@@ -1,4 +1,5 @@
 ﻿using Company_Management.Data;
+using Company_Management.Helper;
 using Company_Management.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -18,39 +19,39 @@ namespace Company_Management.Services
         {
             _company = companyManagementContext;
         }
-        //------------------------VERIFY TOKEN-------------------------
-        public string VerifyToken(HttpResponse httpResponse)
-        {
-            string res;
-            //GenericResult<WelcomeModel> Auth = new GenericResult<WelcomeModel>();
-            var identity = httpResponse.HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                var userclaims = identity.Claims;
-                //var ClaimData = new WelcomeModel()
-                //{
-                //    Name = userclaims.FirstOrDefault(x => x.Type == "Name : ").Value,
-                //    Email = userclaims.FirstOrDefault(x => x.Type == "Email : ").Value,
-                //    Mobile = userclaims.FirstOrDefault(x => x.Type == "Phone : ").Value
-                //};
-                res = userclaims.FirstOrDefault(x => x.Type == "Member ID : ").Value;
-            }
-            else
-            {
-                res = null;
-            }
-            return res;
-        }
+        ////------------------------VERIFY TOKEN-------------------------
+        //public static string VerifyToken(HttpRequest httpRequest)
+        //{
+        //    string res;
+        //    //GenericResult<WelcomeModel> Auth = new GenericResult<WelcomeModel>();
+        //    var identity = httpRequest.HttpContext.User.Identity as ClaimsIdentity;
+        //    if (identity != null)
+        //    {
+        //        var userclaims = identity.Claims;
+        //        //var ClaimData = new WelcomeModel()
+        //        //{
+        //        //    Name = userclaims.FirstOrDefault(x => x.Type == "Name : ").Value,
+        //        //    Email = userclaims.FirstOrDefault(x => x.Type == "Email : ").Value,
+        //        //    Mobile = userclaims.FirstOrDefault(x => x.Type == "Phone : ").Value
+        //        //};
+        //        res = userclaims.FirstOrDefault(x => x.Type == "Member ID : ").Value;
+        //    }
+        //    else
+        //    {
+        //        res = null;
+        //    }
+        //    return res;
+        //}
 
         //
         //-----------------------COMPANY SERVICES--------------------
         //
-        public async Task<GenericResult<string>> SetupCompany(CompanyModel companyModel,HttpResponse httpResponse)
+        public async Task<GenericResult<string>> SetupCompany(CompanyModel companyModel,string MID)
         {
             GenericResult<string> genericResult = new GenericResult<string>();
-            string MID = VerifyToken(httpResponse);
-            if (MID != null)
-            {
+            //string MID = Help.VerifyToken(httpRequest);
+            //if (MID != null)
+            //{
                 var newCompany = new CompanyTable()
                 {
                     Id = MID,
@@ -71,12 +72,12 @@ namespace Company_Management.Services
 
                 genericResult.Status = "Success";
                 genericResult.Message = "Company Added Successfully...";
-            }
-            else
-            {
-                genericResult.Status = "Failed";
-                genericResult.Message = "Unauthorized";
-            }
+            //}
+            //else
+            //{
+            //    genericResult.Status = "Failed";
+            //    genericResult.Message = "Unauthorized";
+            //}
             return genericResult;
         }
     }

@@ -9,6 +9,6 @@ namespace Company_Management.Services
 {
     public interface ICompanyServices
     {
-        Task<GenericResult<string>> SetupCompany(CompanyModel companyModel, HttpResponse httpResponse);
+        Task<GenericResult<string>> SetupCompany(CompanyModel companyModel, string MID);
     }
 }
