@@ -11,7 +11,9 @@ namespace Company_Management.Data
         {
             CompanyTables = new HashSet<CompanyTable>();
             DepartmentTables = new HashSet<DepartmentTable>();
+            EmployeePersonalDetails = new HashSet<EmployeePersonalDetail>();
             Employees = new HashSet<Employee>();
+            Qualifications = new HashSet<Qualification>();
             ReportingManagers = new HashSet<ReportingManager>();
             UserTables = new HashSet<UserTable>();
         }
@@ -28,7 +30,9 @@ namespace Company_Management.Data
 
         public virtual ICollection<CompanyTable> CompanyTables { get; set; }
         public virtual ICollection<DepartmentTable> DepartmentTables { get; set; }
+        public virtual ICollection<EmployeePersonalDetail> EmployeePersonalDetails { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
+        public virtual ICollection<Qualification> Qualifications { get; set; }
         public virtual ICollection<ReportingManager> ReportingManagers { get; set; }
         public virtual ICollection<UserTable> UserTables { get; set; }
     }

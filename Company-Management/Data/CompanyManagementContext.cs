@@ -20,8 +20,10 @@ namespace Company_Management.Data
         public virtual DbSet<CompanyTable> CompanyTables { get; set; }
         public virtual DbSet<DepartmentTable> DepartmentTables { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<EmployeePersonalDetail> EmployeePersonalDetails { get; set; }
         public virtual DbSet<MemberTable> MemberTables { get; set; }
         public virtual DbSet<Otp> Otps { get; set; }
+        public virtual DbSet<Qualification> Qualifications { get; set; }
         public virtual DbSet<ReportingManager> ReportingManagers { get; set; }
         public virtual DbSet<UserTable> UserTables { get; set; }
 
@@ -142,11 +144,13 @@ namespace Company_Management.Data
             modelBuilder.Entity<Employee>(entity =>
             {
                 entity.HasKey(e => e.EmployeeId)
-                    .HasName("PK__Employee__781134A16A5D02A5");
+                    .HasName("PK__Employee__781134A199BF6F24");
 
                 entity.ToTable("Employee");
 
-                entity.Property(e => e.EmployeeId).HasColumnName("Employee_Id");
+                entity.Property(e => e.EmployeeId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("Employee_Id");
 
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(20)
@@ -197,6 +201,93 @@ namespace Company_Management.Data
                     .WithMany(p => p.Employees)
                     .HasForeignKey(d => d.Id)
                     .HasConstraintName("FK__Employee__Id__440B1D61");
+            });
+
+            modelBuilder.Entity<EmployeePersonalDetail>(entity =>
+            {
+                entity.Property(e => e.AlterNateEmail)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.AlterNatePhoneNo)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedBy).HasColumnType("datetime");
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.CurrentAddressLine)
+                    .HasMaxLength(40)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CurrentCity)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CurrentHouseNo)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CurrentLocality)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CurrentPinCode)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CurrentState)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Dstatus)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Mid)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("MId");
+
+                entity.Property(e => e.PermanentAddressLine)
+                    .HasMaxLength(40)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PermanentCity)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PermanentHouseNo)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PermanentLocality)
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PermanentPinCode)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PermanentState)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UpdatedBy).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Emp)
+                    .WithMany(p => p.EmployeePersonalDetails)
+                    .HasForeignKey(d => d.EmpId)
+                    .HasConstraintName("FK__EmployeeP__EmpId__5070F446");
+
+                entity.HasOne(d => d.MidNavigation)
+                    .WithMany(p => p.EmployeePersonalDetails)
+                    .HasForeignKey(d => d.Mid)
+                    .HasConstraintName("FK__EmployeePer__MId__5165187F");
             });
 
             modelBuilder.Entity<MemberTable>(entity =>
@@ -255,6 +346,70 @@ namespace Company_Management.Data
                 entity.Property(e => e.PhoneNo)
                     .HasMaxLength(10)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Qualification>(entity =>
+            {
+                entity.ToTable("Qualification");
+
+                entity.Property(e => e.QualificationId).HasColumnName("QualificationID");
+
+                entity.Property(e => e.City)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedBy).HasColumnType("datetime");
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.Dstatus)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.EmpId).HasColumnName("EmpID");
+
+                entity.Property(e => e.InstituteName)
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MemberId)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.QualificationEndYear)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.QualificationName)
+                    .HasMaxLength(1)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.QualificationStartYear)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Score)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.State)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UpdatedBy).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Emp)
+                    .WithMany(p => p.Qualifications)
+                    .HasForeignKey(d => d.EmpId)
+                    .HasConstraintName("FK__Qualifica__EmpID__4CA06362");
+
+                entity.HasOne(d => d.Member)
+                    .WithMany(p => p.Qualifications)
+                    .HasForeignKey(d => d.MemberId)
+                    .HasConstraintName("FK__Qualifica__Membe__4D94879B");
             });
 
             modelBuilder.Entity<ReportingManager>(entity =>

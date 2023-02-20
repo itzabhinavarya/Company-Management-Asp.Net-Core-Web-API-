@@ -7,7 +7,12 @@ namespace Company_Management.Data
 {
     public partial class Employee
     {
-        public int EmployeeId { get; set; }
+        public Employee()
+        {
+            EmployeePersonalDetails = new HashSet<EmployeePersonalDetail>();
+            Qualifications = new HashSet<Qualification>();
+        }
+
         public string Id { get; set; }
         public int? DepartmentId { get; set; }
         public string EmployeeFullName { get; set; }
@@ -21,8 +26,11 @@ namespace Company_Management.Data
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
         public string Dstatus { get; set; }
+        public int EmployeeId { get; set; }
 
         public virtual DepartmentTable Department { get; set; }
         public virtual MemberTable IdNavigation { get; set; }
+        public virtual ICollection<EmployeePersonalDetail> EmployeePersonalDetails { get; set; }
+        public virtual ICollection<Qualification> Qualifications { get; set; }
     }
 }
