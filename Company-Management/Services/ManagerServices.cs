@@ -1,5 +1,6 @@
 ﻿using Company_Management.Data;
 using Company_Management.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,21 +17,22 @@ namespace Company_Management.Services
             _company = company;
         }
         
-        public async Task<GenericResult<string>> ManagerSetup(ManagerModel managerModel,string c)
+        public async Task<GenericResult<string>> ManagerSetup(ManagerModel managerModel,string MId)
         {
             GenericResult<string> genericResult = new GenericResult<string>();
-            var data = new ReportingManager()
+            var emp = await _company.ReportingManagers.Where(x => x.Id == managerModel.Id).FirstOrDefaultAsync();
+            var Manager = new ReportingManager()
             {
-                Id = c,
-                Name = managerModel.Name,
+                ManagerId = int.Parse(emp.Id),
+                Id = MId,
                 Specialization = managerModel.Specialization,
-                CreatedBy = c,
-                UpdatedBy = c,
+                CreatedBy = MId,
+                UpdatedBy = MId,
                 CreatedOn = DateTime.Now,
                 UpdatedOn = DateTime.Now,
-                Dstatus = "V"
+                Dstatus = "A",
             };
-            await _company.ReportingManagers.AddAsync(data);
+            await _company.ReportingManagers.AddAsync(Manager);
             _company.SaveChanges();
             genericResult.Status = "Success";
             genericResult.Message = "Manager Added Successfully..";

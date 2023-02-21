@@ -31,7 +31,7 @@ namespace Company_Management.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Server=.;Database=companymanagement;Integrated Security=true;");
             }
         }
@@ -138,7 +138,7 @@ namespace Company_Management.Data
                 entity.HasOne(d => d.Manager)
                     .WithMany(p => p.DepartmentTables)
                     .HasForeignKey(d => d.ManagerId)
-                    .HasConstraintName("FK__Departmen__Manag__412EB0B6");
+                    .HasConstraintName("FK__Departmen__Manag__5BE2A6F2");
             });
 
             modelBuilder.Entity<Employee>(entity =>
@@ -201,6 +201,11 @@ namespace Company_Management.Data
                     .WithMany(p => p.Employees)
                     .HasForeignKey(d => d.Id)
                     .HasConstraintName("FK__Employee__Id__440B1D61");
+
+                entity.HasOne(d => d.Manager)
+                    .WithMany(p => p.Employees)
+                    .HasForeignKey(d => d.ManagerId)
+                    .HasConstraintName("FK__Employee__Manage__5CD6CB2B");
             });
 
             modelBuilder.Entity<EmployeePersonalDetail>(entity =>
@@ -415,9 +420,11 @@ namespace Company_Management.Data
             modelBuilder.Entity<ReportingManager>(entity =>
             {
                 entity.HasKey(e => e.ManagerId)
-                    .HasName("PK__Reportin__3BA2AAE152C03A20");
+                    .HasName("PK__Reportin__3BA2AAE1DEEC5E52");
 
                 entity.ToTable("ReportingManager");
+
+                entity.Property(e => e.ManagerId).ValueGeneratedNever();
 
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(100)
@@ -432,10 +439,6 @@ namespace Company_Management.Data
 
                 entity.Property(e => e.Id)
                     .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Name)
-                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Specialization)

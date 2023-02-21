@@ -27,9 +27,11 @@ namespace Company_Management.Data
         public string UpdatedBy { get; set; }
         public string Dstatus { get; set; }
         public int EmployeeId { get; set; }
+        public int? ManagerId { get; set; }
 
         public virtual DepartmentTable Department { get; set; }
         public virtual MemberTable IdNavigation { get; set; }
+        public virtual ReportingManager Manager { get; set; }
         public virtual ICollection<EmployeePersonalDetail> EmployeePersonalDetails { get; set; }
         public virtual ICollection<Qualification> Qualifications { get; set; }
     }

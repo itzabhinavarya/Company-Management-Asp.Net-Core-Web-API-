@@ -8,6 +8,6 @@ namespace Company_Management.Services
 {
     public interface IManagerServices
     {
-        Task<GenericResult<string>> ManagerSetup(ManagerModel managerModel, string c);
+        Task<GenericResult<string>> ManagerSetup(ManagerModel managerModel, string MId);
     }
 }

@@ -7,7 +7,7 @@ namespace Company_Management.Models
 {
     public class ManagerModel
     {
-        public string Name { get; set; }
+        public string Id { get; set; }
         public string Specialization { get; set; }
     }
 }
