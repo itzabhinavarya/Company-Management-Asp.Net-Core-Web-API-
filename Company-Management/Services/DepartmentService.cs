@@ -11,9 +11,9 @@ namespace Company_Management.Services
 {
     public class DepartmentService : IDepartmentService
     {
-        private readonly CompanyManagementContext _company;
+        private readonly companymanagementContext _company;
 
-        public DepartmentService(CompanyManagementContext companyManagementContext)
+        public DepartmentService(companymanagementContext companyManagementContext)
         {
             _company = companyManagementContext;
         }

@@ -9,9 +9,9 @@ namespace Company_Management.Services
 {
     public class ManagerServices : IManagerServices
     {
-        private readonly CompanyManagementContext _company;
+        private readonly companymanagementContext _company;
 
-        public ManagerServices(CompanyManagementContext company)
+        public ManagerServices(companymanagementContext company)
         {
             _company = company;
         }

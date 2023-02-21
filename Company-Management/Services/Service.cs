@@ -16,11 +16,11 @@ namespace Company_Management.Services
 {
     public class Service : IService
     {
-        private readonly CompanyManagementContext _company;
+        private readonly companymanagementContext _company;
 
         public IConfiguration _config { get; }
 
-        public Service(CompanyManagementContext companyManagementContext , IConfiguration configuration)
+        public Service(companymanagementContext companyManagementContext , IConfiguration configuration)
         {
             _company = companyManagementContext;
             _config = configuration;

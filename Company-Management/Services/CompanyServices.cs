@@ -13,9 +13,9 @@ namespace Company_Management.Services
 {
     public class CompanyServices : ICompanyServices
     {
-        private readonly CompanyManagementContext _company;
+        private readonly companymanagementContext _company;
 
-        public CompanyServices(CompanyManagementContext companyManagementContext)
+        public CompanyServices(companymanagementContext companyManagementContext)
         {
             _company = companyManagementContext;
         }

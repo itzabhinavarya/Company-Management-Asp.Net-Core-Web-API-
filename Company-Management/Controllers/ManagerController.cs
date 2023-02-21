@@ -23,7 +23,7 @@ namespace Company_Management.Controllers
         [HttpPost("AddManager")]
         public async Task<IActionResult> AddManager(ManagerModel managerModel)
         {
-            string c = Help.GetClaims(Request);
+            string c = Help.GetClaims(Request).MID;
             GenericResult<string> data = await _managerServices.ManagerSetup(managerModel, c);
             return Ok(data);
         }

@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Company_Management.Data
 {
-    public partial class CompanyManagementContext : DbContext
+    public partial class companymanagementContext : DbContext
     {
-        public CompanyManagementContext()
+        public companymanagementContext()
         {
         }
 
-        public CompanyManagementContext(DbContextOptions<CompanyManagementContext> options)
+        public companymanagementContext(DbContextOptions<companymanagementContext> options)
             : base(options)
         {
         }
@@ -31,8 +31,8 @@ namespace Company_Management.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=.;Database=CompanyManagement;Integrated Security=true;");
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=.;Database=companymanagement;Integrated Security=true;");
             }
         }
 
@@ -206,7 +206,7 @@ namespace Company_Management.Data
             modelBuilder.Entity<EmployeePersonalDetail>(entity =>
             {
                 entity.Property(e => e.AlterNateEmail)
-                    .HasMaxLength(10)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.AlterNatePhoneNo)
@@ -382,7 +382,7 @@ namespace Company_Management.Data
                     .IsUnicode(false);
 
                 entity.Property(e => e.QualificationName)
-                    .HasMaxLength(1)
+                    .HasMaxLength(200)
                     .IsUnicode(false);
 
                 entity.Property(e => e.QualificationStartYear)

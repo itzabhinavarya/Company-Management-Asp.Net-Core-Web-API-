@@ -23,7 +23,7 @@ namespace Company_Management.Controllers
         [HttpPost("AddCompany")]
         public async Task<IActionResult> AddCompany(CompanyModel companyModel)
         {
-            string claim = Help.GetClaims(Request);
+            string claim = Help.GetClaims(Request).MID;
             GenericResult<string> s =await _company.SetupCompany(companyModel,claim);
             return Ok(s);
         }

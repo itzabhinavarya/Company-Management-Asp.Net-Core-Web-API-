@@ -23,7 +23,7 @@ namespace Company_Management.Controllers
         [HttpPost("Department")]
         public async Task<IActionResult> AddDepartment(DepartmentModel departmentModel)
         {
-            string c = Help.GetClaims(Request);
+            string c = Help.GetClaims(Request).MID;
             GenericResult<string> data =await _departmentInterface.AddDepartmentAsync(departmentModel,c);
             return Ok(data);
         }

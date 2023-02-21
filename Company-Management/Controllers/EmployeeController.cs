@@ -1,4 +1,7 @@
-﻿using Company_Management.Services;
+﻿using Company_Management.Helper;
+using Company_Management.Helper.HelperModel;
+using Company_Management.Models;
+using Company_Management.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,6 +20,13 @@ namespace Company_Management.Controllers
         public EmployeeController(IEmployeeServices employeeServices)
         {
             _employeeServices = employeeServices;
+        }
+
+        [HttpPost("Add Employee")]
+        public async Task<IActionResult> AddEmployee(EmployeeModel employeeModel)
+        {
+            var data = await _employeeServices.AddEmployee(employeeModel,Help.GetClaims(Request));
+            return Ok(data);
         }
     }
 }
