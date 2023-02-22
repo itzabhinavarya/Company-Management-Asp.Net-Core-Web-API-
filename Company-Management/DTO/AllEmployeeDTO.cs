@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Company_Management.Models
+namespace Company_Management.DTO
 {
-    public class EmployeeModel
+    public class AllEmployeeDTO
     {
-        public EmployeePersonalDetailsModel employeePersonalDetails { get; set; }
-        public UserModel userModel { get; set; }
-        public List<QualificationModel> qualificationModel { get; set; }
-        public EmployeeTableModel EmployeeTableModel { get; set; }
-         
+        public GetEmployeePersonalDetailsModel employeePersonalDetails { get; set; }
+        public GetUser userDTO { get; set; }
+        public List<GetQualificationModel> qualificationModel { get; set; }
+        public GetEmployee EmployeeTableModel { get; set; }
+
     }
     //------------------------User Personal Details----------------------------
-    public class EmployeePersonalDetailsModel
+    public class GetEmployeePersonalDetailsModel
     {
         public string PermannentHouseNo { get; set; }
         public string PermannentAddressLine { get; set; }
@@ -32,16 +32,17 @@ namespace Company_Management.Models
         public string AlternateEmail { get; set; }
     }
     //------------------------------User Table------------------------------------------
-    public class UserModel
+    public class GetUser
     {
+        public string Name { get; set; }
+        public int Id { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
         public string PhoneNo { get; set; }
         public string Role { get; set; }
         public string Status { get; set; }
     }
     //------------------------------Qualification------------------------------------------
-    public class QualificationModel
+    public class GetQualificationModel
     {
         public string QualificationName { get; set; }
         public string QualificationStartYear { get; set; }
@@ -52,12 +53,12 @@ namespace Company_Management.Models
         public string City { get; set; }
     }
     //-------------------------------------Employee Details-------------------------------------
-    public class EmployeeTableModel
+    public class GetEmployee
     {
         public string EmployeeFullName { get; set; }
         public DateTime DOJ { get; set; }
         public string EmpployementType { get; set; }
         public int WorkingDays { get; set; }
-        public int DepartmentId { get; set; }
+        //public int DepartmentId { get; set; }
     }
 }

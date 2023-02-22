@@ -37,6 +37,8 @@ namespace Company_Management
             services.AddTransient<IDepartmentService,DepartmentService>();
             services.AddTransient<IManagerServices,ManagerServices>();
             services.AddTransient<IEmployeeServices,EmployeeServices>();
+            services.AddTransient<IGetEmployeeServices,GetEmployeeServices>();
+            services.AddTransient<IGetAllEmployeeServices,GetAllEmployeeServices>();
             services.AddDbContext<companymanagementContext>(option => option.UseSqlServer(Configuration.GetConnectionString("CompanyDB")));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(option =>
@@ -72,9 +74,9 @@ namespace Company_Management
 
             app.UseHttpsRedirection();
 
-            app.UseRouting();
-
             app.UseAuthentication();
+
+            app.UseRouting();
 
             app.UseAuthorization();
 

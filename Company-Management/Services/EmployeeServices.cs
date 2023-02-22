@@ -80,7 +80,7 @@ namespace Company_Management.Services
                     EmployementType = employeeModel.EmployeeTableModel.EmpployementType,
                     WorkingDays = employeeModel.EmployeeTableModel.WorkingDays,
                     Email = employeeModel.userModel.Email,
-                    //DepartmentId = employeeModel.EmployeeTableModel.DepartmentId,
+                    DepartmentId = employeeModel.EmployeeTableModel.DepartmentId,
                     CreatedOn = DateTime.Now,
                     UpdatedOn = DateTime.Now,
                     Dstatus = "V",
@@ -115,6 +115,7 @@ namespace Company_Management.Services
                 var PersonalData = new EmployeePersonalDetail()
                 {
                     Mid = claimDTO.MID,
+                    EmpId = Empdata.EmployeeId,
                     CurrentHouseNo = employeeModel.employeePersonalDetails.CurrentHouseNo,
                     CurrentAddressLine = employeeModel.employeePersonalDetails.CurrentAddressLine,
                     CurrentLocality = employeeModel.employeePersonalDetails.CurrentLocality,
@@ -140,6 +141,8 @@ namespace Company_Management.Services
             }
             catch (Exception err)
             {
+                genericResult.Status = "Server Error";
+                genericResult.Message = "Internal Server Error";
                 Transaction.Current.Rollback();
             }
             return genericResult;

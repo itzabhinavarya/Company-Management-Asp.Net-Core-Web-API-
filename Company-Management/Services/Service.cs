@@ -11,6 +11,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Company_Management.Services
 {
@@ -19,6 +20,7 @@ namespace Company_Management.Services
         private readonly companymanagementContext _company;
 
         public IConfiguration _config { get; }
+        public object Transction { get; private set; }
 
         public Service(companymanagementContext companyManagementContext , IConfiguration configuration)
         {
@@ -51,94 +53,114 @@ namespace Company_Management.Services
         public async Task<GenericResult<string>> GetOTP(OTPModel OtpModel)
         {
             GenericResult<string> genericResult = new GenericResult<string>();
-            var existUser =await  _company.MemberTables.Where(x => x.Email == OtpModel.Email && x.PhoneNo == OtpModel.PhoneNo).Select(x=>x.Id).FirstOrDefaultAsync();
-            if(existUser == null)
+            try
             {
-                Random random = new Random();
-                int min = 1000;
-                int max = 9999;
-                int otp = random.Next(min, max);
-
-                var OTPData = new Otp()
+                var existUser = await _company.MemberTables.Where(x => x.Email == OtpModel.Email && x.PhoneNo == OtpModel.PhoneNo).Select(x => x.Id).FirstOrDefaultAsync();
+                if (existUser == null)
                 {
-                    Otp1 = otp.ToString(),
-                    Email = OtpModel.Email,
-                    PhoneNo = OtpModel.PhoneNo,
-                    IsVerified = 0
-                };
-                genericResult.Status = "Success";
-                genericResult.Message = "OTP Generated Successfully....";
-                genericResult.Data = otp;
-                _company.Otps.Add(OTPData);
-                _company.SaveChanges();
-                return genericResult;
+                    Random random = new Random();
+                    int min = 1000;
+                    int max = 9999;
+                    int otp = random.Next(min, max);
+
+                    var OTPData = new Otp()
+                    {
+                        Otp1 = otp.ToString(),
+                        Email = OtpModel.Email,
+                        PhoneNo = OtpModel.PhoneNo,
+                        IsVerified = 0
+                    };
+                    genericResult.Status = "Success";
+                    genericResult.Message = "OTP Generated Successfully....";
+                    genericResult.Data = otp;
+                    _company.Otps.Add(OTPData);
+                    _company.SaveChanges();
+                }
+                else
+                {
+                    genericResult.Status = "Failed";
+                    genericResult.Message = "User Already Exists ... Can't Generate OTP .... Try to login";
+                }
             }
-            else
+            catch (Exception err)
             {
-                genericResult.Status = "Failed";
-                genericResult.Message = "User Already Exists ... Can't Generate OTP .... Try to login";
-                return genericResult;
+                genericResult.Status = "Error";
+                genericResult.Message = "Internal Server Error";
+                Transaction.Current.Rollback();
             }
+            return genericResult;
         }
         //----------------------------OTP GENERATE METHOD ENDS----------------------------------- 
 
         //----------------------------USER REGISTRATION SERVICES----------------------------------- 
         public async Task<GenericResult<MemberModel>> AddMember(MemberModel memberModel)
         {
+
             GenericResult<MemberModel> genericResult = new GenericResult<MemberModel>();
-            var validOtp =await _company.Otps.Where(x=>x.PhoneNo == memberModel.PhoneNo && x.Email == memberModel.Email && x.IsVerified == 0).OrderBy(x=>x.Otpid).LastOrDefaultAsync();
-            var member =await _company.MemberTables.Where(x => x.PhoneNo == memberModel.PhoneNo && x.Email == memberModel.Email).FirstOrDefaultAsync();
-            if (validOtp != null)
+            try
             {
-                if (memberModel.OTP == validOtp.Otp1)
+                var validOtp = await _company.Otps.Where(x => x.PhoneNo == memberModel.PhoneNo && x.Email == memberModel.Email && x.IsVerified == 0).OrderBy(x => x.Otpid).LastOrDefaultAsync();
+                var member = await _company.MemberTables.Where(x => x.PhoneNo == memberModel.PhoneNo && x.Email == memberModel.Email).FirstOrDefaultAsync();
+                if (validOtp != null)
                 {
-                    if (member == null)
+                    if (memberModel.OTP == validOtp.Otp1)
                     {
-                        var MemberData = new MemberTable()
+                        if (member == null)
                         {
-                            Id = await GenerateId(memberModel),
-                            FullName = memberModel.FullName,
-                            Email = memberModel.Email,
-                            PhoneNo = memberModel.PhoneNo,
-                            CreatedOn = DateTime.Now,
-                            UpdatedOn = DateTime.Now,
-                            Dstatus = "V",
-                        };
-                        var UserData = new UserTable()
-                        {
-                            //UserId = MemberData.Id,
-                            Id = MemberData.Id,
-                            PhoneNo = MemberData.PhoneNo,
-                            Email = MemberData.Email,
-                            Password = memberModel.Password,
-                            LastLogin = DateTime.Now,
-                            Role = "Owner",
-                            Status = "Admin",
-                            CreatedOn = DateTime.Now,
-                            UpdatedOn = DateTime.Now,
-                            Dstatus = "V"
-                        };
-                        validOtp.IsVerified = 1;
-                        MemberData.CreatedBy = MemberData.Id;
-                        MemberData.UpdatedBy = MemberData.Id;
-                        UserData.CreatedBy = MemberData.Id;
-                        UserData.UpdatedBy = MemberData.Id;
-                        genericResult.Status = "Success";
-                        genericResult.Message = "User Added Successfully";
-                        //genericResult.Data = MemberData;
-                        _company.Otps.Update(validOtp);
-                        await _company.MemberTables.AddAsync(MemberData);
-                        _company.UserTables.Add(UserData);
-                        await _company.SaveChangesAsync();
+                            var MemberData = new MemberTable()
+                            {
+                                Id = await GenerateId(memberModel),
+                                FullName = memberModel.FullName,
+                                Email = memberModel.Email,
+                                PhoneNo = memberModel.PhoneNo,
+                                CreatedOn = DateTime.Now,
+                                UpdatedOn = DateTime.Now,
+                                Dstatus = "V",
+                            };
+                            var UserData = new UserTable()
+                            {
+                                //UserId = MemberData.Id,
+                                Id = MemberData.Id,
+                                PhoneNo = MemberData.PhoneNo,
+                                Email = MemberData.Email,
+                                Password = memberModel.Password,
+                                LastLogin = DateTime.Now,
+                                Role = "Owner",
+                                Status = "Admin",
+                                CreatedOn = DateTime.Now,
+                                UpdatedOn = DateTime.Now,
+                                Dstatus = "V"
+                            };
+                            validOtp.IsVerified = 1;
+                            MemberData.CreatedBy = MemberData.Id;
+                            MemberData.UpdatedBy = MemberData.Id;
+                            UserData.CreatedBy = MemberData.Id;
+                            UserData.UpdatedBy = MemberData.Id;
+                            genericResult.Status = "Success";
+                            genericResult.Message = "User Added Successfully";
+                            //genericResult.Data = MemberData;
+                            _company.Otps.Update(validOtp);
+                            await _company.MemberTables.AddAsync(MemberData);
+                            _company.UserTables.Add(UserData);
+                            await _company.SaveChangesAsync();
+                            return genericResult;
+                        }
+                        genericResult.Status = "Failed";
+                        genericResult.Message = "User Already Exist. Try to login";
                         return genericResult;
                     }
-                    genericResult.Status = "Failed";
-                    genericResult.Message = "User Already Exist. Try to login";
-                    return genericResult;
                 }
+                genericResult.Status = "Failed";
+                genericResult.Message = "Invalid OTP";
             }
-            genericResult.Status = "Failed";
-            genericResult.Message = "Invalid OTP";
+            catch(Exception err)
+            {
+                genericResult.Status = "Server Error";
+                genericResult.Message = "Internal Server Error";
+                Transaction.Current.Rollback();
+            }
+
+            
             return genericResult;
         }
         //----------------------------END OF USER REGISTRATION SERVICES----------------------------------- 
@@ -148,49 +170,58 @@ namespace Company_Management.Services
         public async Task<GenericResult<LoginDTO>> Login(CredentialModel credentialModel)
         {
             GenericResult<LoginDTO> genericResult = new GenericResult<LoginDTO>();
-
-            var phone = await _company.UserTables.Where(x=>x.PhoneNo == credentialModel.Cred && x.Password == credentialModel.Password).FirstOrDefaultAsync();
-            var email = await _company.UserTables.Where(x=>x.Email == credentialModel.Cred && x.Password == credentialModel.Password).FirstOrDefaultAsync();
-            //var existData = await _company.UserTables.Where(x => x.PhoneNo == credentialModel.Cred || x.Email == credentialModel.Cred).FirstOrDefaultAsync();
-            var type = credentialModel.Type.ToLower();
-            if(type == "email")
+            try
             {
-                if (email == null)
+                var phone = await _company.UserTables.Where(x => x.PhoneNo == credentialModel.Cred && x.Password == credentialModel.Password).FirstOrDefaultAsync();
+                var email = await _company.UserTables.Where(x => x.Email == credentialModel.Cred && x.Password == credentialModel.Password).FirstOrDefaultAsync();
+                //var existData = await _company.UserTables.Where(x => x.PhoneNo == credentialModel.Cred || x.Email == credentialModel.Cred).FirstOrDefaultAsync();
+                var type = credentialModel.Type.ToLower();
+                if (type == "email")
+                {
+                    if (email == null)
+                    {
+                        genericResult.Status = "Failed";
+                        genericResult.Message = "Invalid Email";
+                        return genericResult;
+                    }
+                }
+                if (type == "phone")
+                {
+                    if (phone == null)
+                    {
+                        genericResult.Status = "Failed";
+                        genericResult.Message = "Invalid Phone";
+                        return genericResult;
+                    }
+                }
+                var exist = await _company.UserTables.Where(x => x.Email == credentialModel.Cred && x.Password == credentialModel.Password || x.PhoneNo == credentialModel.Cred && x.Password == credentialModel.Password).FirstOrDefaultAsync();
+                if (exist != null)
+                {
+                    var token = GenerateToken(exist);
+                    var newData = new LoginDTO()
+                    {
+                        UserID = exist.UserId.ToString(),
+                        MemberID = exist.Id,
+                        Status = exist.Status,
+                        Token = token
+                    };
+                    genericResult.Status = "Success";
+                    genericResult.Message = "Token Generated Successfully";
+                    genericResult.Data = newData;
+                    return genericResult;
+                }
+                else
                 {
                     genericResult.Status = "Failed";
-                    genericResult.Message = "Invalid Email";
+                    genericResult.Message = "Invalid Password";
                     return genericResult;
                 }
             }
-            if (type == "phone")
+            catch (Exception err)
             {
-                if (phone == null)
-                {
-                    genericResult.Status = "Failed";
-                    genericResult.Message = "Invalid Phone";
-                    return genericResult;
-                }
-            }
-            var exist = await _company.UserTables.Where(x => x.Email == credentialModel.Cred && x.Password == credentialModel.Password || x.PhoneNo == credentialModel.Cred && x.Password == credentialModel.Password).FirstOrDefaultAsync();
-            if (exist != null)
-            {
-                var token = GenerateToken(exist);
-                var newData = new LoginDTO()
-                {
-                    UserID = exist.UserId.ToString(),
-                    MemberID = exist.Id,
-                    Status = exist.Status,
-                    Token = token
-                };
-                genericResult.Status = "Success";
-                genericResult.Message = "Token Generated Successfully";
-                genericResult.Data = newData;
-                return genericResult;
-            }
-            else
-            {
-                genericResult.Status = "Failed";
-                genericResult.Message = "Invalid Password";
+                genericResult.Status = "Error";
+                genericResult.Message = "Internal Server Error";
+                Transaction.Current.Rollback();
                 return genericResult;
             }
         }
@@ -198,7 +229,7 @@ namespace Company_Management.Services
         //----------------------------Authentication And Authorization -----------------------------------
         //
         public string GenerateToken(UserTable cred)
-        {
+        { 
             var IssuerSigninKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var SigninCredentials = new SigningCredentials(IssuerSigninKey,SecurityAlgorithms.HmacSha256);
             
@@ -211,18 +242,10 @@ namespace Company_Management.Services
                 _config["Jwt:Issuer"],
                 _config["Jwt:Audience"],
                 Claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddMinutes(60),
                 signingCredentials: SigninCredentials
             );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-        //
-        //
-        //-----------------------------
-
-
-
-
-
     }
 }
