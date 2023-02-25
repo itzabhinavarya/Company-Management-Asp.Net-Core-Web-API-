@@ -10,6 +10,6 @@ namespace Company_Management.Services
     public interface IEmployeeServices
     {
         //Task<GenericResult<string>> EmployeeQualification(EmployeeModel employee, ClaimDTO claimDTO);
-        Task<GenericResult<string>> AddEmployee(EmployeeModel employeeModel, ClaimDTO claimDTO);
+        Task<GenericResult<string>> AddEmployee(EmployeeModel employeeModel, ClaimDTO claimDTO, int Tempid);
     }
 }

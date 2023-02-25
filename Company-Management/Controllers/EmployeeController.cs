@@ -2,6 +2,7 @@
 using Company_Management.Helper.HelperModel;
 using Company_Management.Models;
 using Company_Management.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,10 +23,11 @@ namespace Company_Management.Controllers
             _employeeServices = employeeServices;
         }
 
-        [HttpPost("Add Employee")]
-        public async Task<IActionResult> AddEmployee(EmployeeModel employeeModel)
+        [HttpPost("AddEmployee/{TempId}")]
+        [Authorize]
+        public async Task<IActionResult> AddEmployee(EmployeeModel employeeModel ,[FromRoute] int TempId)
         {
-            var data = await _employeeServices.AddEmployee(employeeModel,Help.GetClaims(Request));
+            var data = await _employeeServices.AddEmployee(employeeModel,Help.GetClaims(Request),TempId);
             return Ok(data);
         }
     }

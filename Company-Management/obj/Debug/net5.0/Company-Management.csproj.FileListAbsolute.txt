@@ -55,4 +55,3 @@ D:\Company-Management\Company-Management\obj\Debug\net5.0\ref\Company-Management
 D:\Company-Management\Company-Management\obj\Debug\net5.0\Company-Management.pdb
 D:\Company-Management\Company-Management\obj\Debug\net5.0\Company-Management.genruntimeconfig.cache
 D:\Company-Management\Company-Management\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-D:\Company-Management\Company-Management\obj\Debug\net5.0\Company-Management.csproj.AssemblyReference.cache
