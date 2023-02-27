@@ -91,13 +91,13 @@ namespace Company_Management.Services
                     ExistEmp.Dstatus = "V";
                     ExistEmp.EmployeeId = ExistUser.UserId;
 
-                    await _company.SaveChangesAsync();
+                    await _company.SaveChangesAsync(); 
 
                     List<Qualification> ExistQual = await _company.Qualifications.Where(x => x.MemberId == claimDTO.MID && x.EmpId == Tempid).ToListAsync();
 
                     for(int i = 0 ; i < employeeModel.qualificationModel.Count ; i++)
                     {
-                        for (int j = i ; j < ExistQual.Count; j++)
+                        for (int j = i ; j < ExistQual.Count;)
                         {
                             ExistQual[j].MemberId = claimDTO.MID;
                             ExistQual[j].EmpId = ExistEmp.EmployeeId;
@@ -121,7 +121,7 @@ namespace Company_Management.Services
                     var ExistPData = await _company.EmployeePersonalDetails.Where(x => x.Mid == claimDTO.MID && x.EmpId == Tempid).FirstOrDefaultAsync();
 
                     ExistPData.Mid = claimDTO.MID;
-                    ExistPData.EmpId = ExistEmp.EmployeeId;
+                    ExistPData.EmpId = ExistEmp.EmployeeId;  
                     ExistPData.CurrentHouseNo = employeeModel.employeePersonalDetails.CurrentHouseNo;
                     ExistPData.CurrentAddressLine = employeeModel.employeePersonalDetails.CurrentAddressLine;
                     ExistPData.CurrentLocality = employeeModel.employeePersonalDetails.CurrentLocality;

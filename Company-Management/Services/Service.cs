@@ -242,7 +242,7 @@ namespace Company_Management.Services
                 _config["Jwt:Issuer"],
                 _config["Jwt:Audience"],
                 Claims,
-                expires: DateTime.Now.AddMinutes(60),
+                expires: DateTime.Now.AddDays(1),
                 signingCredentials: SigninCredentials
             );
             return new JwtSecurityTokenHandler().WriteToken(token);
