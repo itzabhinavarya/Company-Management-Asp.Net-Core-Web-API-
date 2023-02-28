@@ -20,13 +20,17 @@ namespace Company_Management.Services
             _company = company;
         }
 
-        public async Task<GenericResult<GetUser>> GetAllEmployee(string type,ClaimDTO claimDTO)
+        //public async Task<GenericResult<GetUser>> GetAllEmployee(string type,ClaimDTO claimDTO)
+        //public async Task<IList<GetUser>> GetAllEmployee(string type,ClaimDTO claimDTO)
+        public async Task<IList<GetUser>> GetAllEmployee(string type,string MId)
         {
             var output = new GenericResult<GetUser>();
+            IList<GetUser> Employee = null;
             try
             {
-                var MId = claimDTO.MID;
-                IList<GetUser> Employee = _company.Employees.Where(x => x.Id == MId && (type != null ? x.DepartmentId == int.Parse(type) : true)).Select(
+                //var MId = claimDTO.MID;
+
+                Employee = _company.Employees.Where(x => x.Id == MId && (type != null ? x.DepartmentId == int.Parse(type) : true)).Select(
                     x => new GetUser()
                     {
                         Id = x.EmployeeId,
@@ -36,11 +40,13 @@ namespace Company_Management.Services
                         Role = _company.UserTables.Where(u => u.UserId == x.EmployeeId).Select(x => x.Role).FirstOrDefault(),
                         Status = _company.UserTables.Where(u => u.UserId == x.EmployeeId).Select(x => x.Status).FirstOrDefault()
                     }).ToList();
+
+
                 if (Employee.Count > 0)
                 {
                     output.Status = "Success";
                     output.Message = "Data Fetched Successfully";
-                    output.Data = Employee;
+                    //output.Data = Employee;
                 }
                 else
                 {
@@ -53,7 +59,7 @@ namespace Company_Management.Services
                 output.Status = "Error";
                 output.Message = "Internal Server Error";
             }
-            return output;
+            return Employee;
         }
     }
 }

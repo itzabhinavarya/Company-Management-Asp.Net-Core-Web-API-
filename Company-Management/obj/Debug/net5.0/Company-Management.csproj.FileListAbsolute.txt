@@ -56,3 +56,7 @@ D:\Company-Management\Company-Management\obj\Debug\net5.0\Company-Management.pdb
 D:\Company-Management\Company-Management\obj\Debug\net5.0\Company-Management.genruntimeconfig.cache
 D:\Company-Management\Company-Management\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Company-Management\Company-Management\obj\Debug\net5.0\Company-Management.csproj.AssemblyReference.cache
+D:\Company-Management\Company-Management\bin\Debug\net5.0\EPPlus.dll
+D:\Company-Management\Company-Management\bin\Debug\net5.0\EPPlus.Interfaces.dll
+D:\Company-Management\Company-Management\bin\Debug\net5.0\EPPlus.System.Drawing.dll
+D:\Company-Management\Company-Management\bin\Debug\net5.0\Microsoft.IO.RecyclableMemoryStream.dll

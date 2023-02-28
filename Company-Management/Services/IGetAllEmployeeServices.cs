@@ -9,6 +9,8 @@ namespace Company_Management.Services
 {
     public interface IGetAllEmployeeServices
     {
-        Task<GenericResult<GetUser>> GetAllEmployee(string type, ClaimDTO claimDTO);
+        //Task<GenericResult<GetUser>> GetAllEmployee(string type, ClaimDTO claimDTO);
+        //Task<IList<GetUser>> GetAllEmployee(string type, ClaimDTO claimDTO);
+        Task<IList<GetUser>> GetAllEmployee(string type, string MId);
     }
 }
