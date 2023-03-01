@@ -67,7 +67,7 @@ namespace Company_Management.Controllers
             worksheet.Cells[1, 31].Value = "AlternateEmail";
 
 
-            using (var range = worksheet.Cells[1, 1, 1, 32])  //Address "A1:F1"
+            using (var range = worksheet.Cells[1, 1, 1, 31])  //Address "A1:F1"
             {
                 range.Style.Font.Bold = true;
                 range.Style.Fill.PatternType = ExcelFillStyle.Solid;
@@ -124,30 +124,30 @@ namespace Company_Management.Controllers
                     };
                     QualificationModelxls Qualification = new QualificationModelxls()
                     {
-                        QualificationName = worksheet.Cells[2, 1].Value.ToString().Trim(),
-                        QualificationStartYear = worksheet.Cells[2, 2].Value.ToString().Trim(),
-                        QualificationEndYear = worksheet.Cells[2, 3].Value.ToString().Trim(),
-                        InstituteName = worksheet.Cells[2, 4].Value.ToString().Trim(),
-                        Score = worksheet.Cells[2, 5].Value.ToString().Trim(),
-                        State = worksheet.Cells[2, 5].Value.ToString().Trim(),
-                        City = worksheet.Cells[2, 5].Value.ToString().Trim(),
+                        QualificationName = worksheet.Cells[2, 11].Value.ToString().Trim(),
+                        QualificationStartYear = worksheet.Cells[2, 12].Value.ToString().Trim(),
+                        QualificationEndYear = worksheet.Cells[2, 13].Value.ToString().Trim(),
+                        InstituteName = worksheet.Cells[2, 14].Value.ToString().Trim(),
+                        Score = worksheet.Cells[2, 15].Value.ToString().Trim(),
+                        State = worksheet.Cells[2,16].Value.ToString().Trim(),
+                        City = worksheet.Cells[2, 17].Value.ToString().Trim(),
                     };
                     EmployeePersonalDetailsModelxls EmpPersonalDetails = new EmployeePersonalDetailsModelxls()
                     {
-                        PermannentHouseNo = worksheet.Cells[2, 1].Value.ToString().Trim(),
-                        PermannentAddressLine = worksheet.Cells[2, 2].Value.ToString().Trim(),
-                        PermannentLocality = worksheet.Cells[2, 3].Value.ToString().Trim(),
-                        PermannentPincode = worksheet.Cells[2, 4].Value.ToString().Trim(),
-                        PermannentCity = worksheet.Cells[2, 5].Value.ToString().Trim(),
-                        PermannentState = worksheet.Cells[2, 5].Value.ToString().Trim(),
-                        CurrentHouseNo = worksheet.Cells[2, 5].Value.ToString().Trim(),
-                        CurrentAddressLine = worksheet.Cells[2, 5].Value.ToString().Trim(),
-                        CurrentLocality = worksheet.Cells[2, 5].Value.ToString().Trim(),
-                        CurrentPinCode = worksheet.Cells[2, 5].Value.ToString().Trim(),
-                        CurrentCity = worksheet.Cells[2, 5].Value.ToString().Trim(),
-                        CurrentState = worksheet.Cells[2, 5].Value.ToString().Trim(),
-                        AlternatePhoneNo = worksheet.Cells[2, 5].Value.ToString().Trim(),
-                        AlternateEmail = worksheet.Cells[2, 5].Value.ToString().Trim(),
+                        PermannentHouseNo = worksheet.Cells[2, 18].Value.ToString().Trim(),
+                        PermannentAddressLine = worksheet.Cells[2, 19].Value.ToString().Trim(),
+                        PermannentLocality = worksheet.Cells[2, 20].Value.ToString().Trim(),
+                        PermannentPincode = worksheet.Cells[2, 21].Value.ToString().Trim(),
+                        PermannentCity = worksheet.Cells[2, 22].Value.ToString().Trim(),
+                        PermannentState = worksheet.Cells[2, 23].Value.ToString().Trim(),
+                        CurrentHouseNo = worksheet.Cells[2, 24].Value.ToString().Trim(),
+                        CurrentAddressLine = worksheet.Cells[2, 25].Value.ToString().Trim(),
+                        CurrentLocality = worksheet.Cells[2, 26].Value.ToString().Trim(),
+                        CurrentPinCode = worksheet.Cells[2, 27].Value.ToString().Trim(),
+                        CurrentCity = worksheet.Cells[2, 28].Value.ToString().Trim(),
+                        CurrentState = worksheet.Cells[2, 29].Value.ToString().Trim(),
+                        AlternatePhoneNo = worksheet.Cells[2, 30].Value.ToString().Trim(),
+                        AlternateEmail = worksheet.Cells[2, 31].Value.ToString().Trim(),
                     };
 
                     AddEmployeeExcelModel emp = new AddEmployeeExcelModel()
