@@ -61,7 +61,7 @@ namespace Company_Management.Controllers
                 worksheet.Cells[j,6].Value = dataCount[i].Status;
                 j++;
             }
-            using (var range = worksheet.Cells[1, 1, 1, 6])  //Address "A1:A5"
+            using (var range = worksheet.Cells[1, 1, 1, 6])  //Address "A1:F1"
             {
                 range.Style.Font.Bold = true;
                 range.Style.Fill.PatternType = ExcelFillStyle.Solid;
@@ -73,7 +73,9 @@ namespace Company_Management.Controllers
             { 
                 package.SaveAs(memory);
                 var content = memory.ToArray();
-                return File(content, "Application/octet-stream", "EmployeeDetails.xlsx");
+                string ContentType = "Application/octet-stream";
+                string FileName = "EmployeeDetails.xlsx";
+                return File(content, ContentType, FileName);
             }
             //return Ok(data);
         }

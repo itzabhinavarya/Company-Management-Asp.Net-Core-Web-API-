@@ -39,6 +39,7 @@ namespace Company_Management
             services.AddTransient<IEmployeeServices,EmployeeServices>();
             services.AddTransient<IGetEmployeeServices,GetEmployeeServices>();
             services.AddTransient<IGetAllEmployeeServices,GetAllEmployeeServices>();
+            services.AddTransient<IAddEmployeeByExcel,AddEmployeeByExcelServices>();
             services.AddDbContext<companymanagementContext>(option => option.UseSqlServer(Configuration.GetConnectionString("CompanyDB")));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(option =>
